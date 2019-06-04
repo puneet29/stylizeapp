@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+    <link rel="shortcut icon" href="{{url_for('static', filename='images/icon.png')}}" type="image/x-icon">
+    <title>Image Style Transfer App</title>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #212121">
+            <a class="navbar-brand" href="#">
+                <img src="{{url_for('static', filename='images/logo.svg')}}" width="32" height="32"
+                    class="d-inline-block align-top" alt="Logo">
+                Style Transfer App
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://puneet29.github.io/StyleTransferApp/" target="_blank">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://puneet29.github.io/" target="_blank">About Author</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mailto:puneet29saini@gmail.com" target="_blank">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+
+</body>
+
+</html>
