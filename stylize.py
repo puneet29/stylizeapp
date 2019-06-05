@@ -35,13 +35,3 @@ def stylize(content_image, content_scale, output_image, model, cuda=0):
         # Output image
         output = style_model(content_image).cpu()
     save_image(output_image, output[0])
-
-
-if __name__ == "__main__":
-
-    content_image = "content.jpeg"
-    content_scale = None
-    output_image = time.ctime().replace(' ', '_') + '.jpg'
-    model = "models/mosaic.model"
-
-    stylize(content_image, content_scale, output_image, model)
