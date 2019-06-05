@@ -4,6 +4,7 @@ import requests
 from stylize import stylize
 from werkzeug.utils import secure_filename
 import os
+import time
 
 
 UPLOAD_FOLDER = "uploads/"
@@ -43,8 +44,8 @@ def homepage():
 
 @app.route('/upload/', methods=['POST', 'GET'])
 def upload():
+    style = request.args.get('style')
     if (request.method == 'GET'):
-        style = request.args.get('style')
         return render_template('upload.html', stylePath=scrape(style+".jpg"))
     else:
         if ('file' not in request.files):
@@ -56,9 +57,12 @@ def upload():
             return(redirect(request.url))
         if(file and allowed_file(file.filename)):
             filename = secure_filename(file.filename)
-            print(file)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return(redirect(url_for('uploaded_file', filename=filename)))
+            output_img = 'static/out/' + time.ctime().replace(' ', '_')+'.jpg'
+            uploaded_img = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(uploaded_img)
+            stylize(file, 1, output_img, "models/"+style+".model", 0)
+            os.remove(uploaded_img)
+            return(render_template('uploaded.html', photo=output_img))
         flash('Please select right file')
         return(redirect(request.url))
 
