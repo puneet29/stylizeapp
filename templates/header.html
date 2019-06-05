@@ -19,7 +19,7 @@
     <!-- Navbar -->
     <div>
         <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background: rgba(0, 0, 0, 0.75)">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
                 <img src="{{url_for('static', filename='images/logo.svg')}}" width="32" height="32"
                     class="d-inline-block align-top" alt="Logo"> Style Transfer App
             </a>
@@ -30,7 +30,7 @@
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="https://puneet29.github.io/StyleTransferApp/" target="_blank">Blog</a>
@@ -45,14 +45,23 @@
             </div>
         </nav>
     </div>
-
-    <div>
-        {% block body %}
-        {% endblock %}
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">×</span></button>
+                    {{message}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
     </div>
+    {% block body %}
+    {% endblock %}
 
-    <footer class="text-light footer card-footer"
-        style="background-color: #212121; position: absolute; bottom: 0; width: 100%">
+    <footer class="text-light py-3" style="background-color: #212121; width: 100%">
         <div class="container">
             <div class="float-right">
                 <h5>
