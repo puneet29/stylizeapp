@@ -14,7 +14,7 @@
 <body>
     <!-- Navbar -->
     <div>
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: transparent">
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background: rgba(0, 0, 0, 0.75)">
             <a class="navbar-brand" href="#">
                 <img src="{{url_for('static', filename='images/logo.svg')}}" width="32" height="32"
                     class="d-inline-block align-top" alt="Logo"> Style Transfer App
@@ -93,33 +93,97 @@
 
 
     <div class="container text-center" style="margin-top: 5%; margin-bottom: 5%">
-        <h3>LET'S STYLIZE YOUR PHOTO LIKE IT WAS MADE BY PICASSO</h3>
+        <h3 class="heading">LET'S STYLIZE YOUR PHOTO LIKE IT WAS MADE BY PICASSO</h3>
         <h5>This tool will stylize your image based on the style you've selected. This tool is an application of deep
             learning and neural style transfer. It uses Pytorch and SciPy to accomplish the results. <br>
             Get your own results by following the following steps:</h5>
         <br>
         <div class="card-deck">
-            <div class="card">
+            <div class="card shadow-sm p-2 mb-5">
                 <img src="static/images/unsplash.jpg" class="card-img-top" alt="Content Image">
                 <div class="card-body">
                     <h5 class="card-title">1. Select the content image</h5>
                     <p class="card-text">Upload the image you want our neural net to stylize.</p>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#contentModal">
+                        Select image
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="contentModal" tabindex="-1" role="dialog"
+                        aria-labelledby="contentModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="contentModalLabel">Content Image</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="input-group mb-3">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                                aria-describedby="inputGroupFileAddon01">
+                                            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Upload photo</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="card">
+            <div class="card shadow-sm p-2 mb-5">
                 <img src="static/images/styleExample.jpg" class="card-img-top" alt="Style Image">
                 <div class="card-body">
                     <h5 class="card-title">2. Select a Style image</h5>
                     <p class="card-text">The style from this image will be extracted and applied to content image.
                         Select one image from existing style images.
                     </p>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#styleModal">
+                        Select style
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="styleModal" tabindex="-1" role="dialog"
+                        aria-labelledby="styleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="styleModalLabel">Style Image</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="card-group">
+                                        {% for i in styles %}
+                                        <button type="button" class="card">
+                                            <img src="{{i}}" class="card-img-top"
+                                                alt="{{i.split('/')[-1].split('.')[0]}}">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{i.split('/')[-1].split('.')[0]}}</h5>
+                                            </div>
+                                        </button>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="card">
+            <div class="card shadow-sm p-2 mb-5">
                 <img src="static/images/starry.jpg" class="card-img-top" alt="Final Image">
                 <div class="card-body">
                     <h5 class="card-title">3. You get your stylized image</h5>
                     <p class="card-text">The model will paint your image with its artistic skills. </p>
+                    <button type="button" class="btn btn-primary">Let's start
+                        painting</button>
                 </div>
             </div>
         </div>
@@ -128,21 +192,23 @@
     <footer class="text-light footer card-footer" style="background-color: #212121">
         <div class="container">
             <div class="float-right">
-                <a class="text-light" href="https://www.github.com/puneet29" target="_blank">
-                    <i class="fab fa-github"></i>
-                </a> ·
-                <a class="text-light" href="https://www.instagram.com/puneetsaini" target="_blank">
-                    <i class="fab fa-instagram"></i>
-                </a> ·
-                <a class="text-light" href="https://www.facebook.com/geekpuneet" target="_blank">
-                    <i class="fab fa-facebook-square"></i>
-                </a> ·
-                <a class="text-light" href="https://twitter.com/punnettsaini" target="_blank">
-                    <i class="fab fa-twitter"></i>
-                </a>
+                <h5>
+                    <a class="text-light" href="https://www.github.com/puneet29" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a> ·
+                    <a class="text-light" href="https://www.instagram.com/puneetsaini" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a> ·
+                    <a class="text-light" href="https://www.facebook.com/geekpuneet" target="_blank">
+                        <i class="fab fa-facebook-square"></i>
+                    </a> ·
+                    <a class="text-light" href="https://twitter.com/punnettsaini" target="_blank">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </h5>
             </div>
-            <p class="float-left">Style Transfer App</p>
-            <p class="text-center">Made with <i class="fas fa-heart"></i> by Puneet</p>
+            <h5 class="float-left">Style Transfer App</h5>
+            <h5 class="text-center">Made with <i class="fas fa-heart"></i> by Puneet</h5>
         </div>
     </footer>
 
