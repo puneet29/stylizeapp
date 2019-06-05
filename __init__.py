@@ -12,6 +12,9 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# Set the secret key to some random bytes. Keep this really secret!
+app.secret_key = b'os24/.[lNWfPn<Fs]IuH'
+
 
 def allowed_file(filename):
     return('.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS)
@@ -38,10 +41,26 @@ def homepage():
     return render_template('index.html', styles=scrape())
 
 
-@app.route('/upload/')
+@app.route('/upload/', methods=['POST', 'GET'])
 def upload():
-    style = request.args.get('style')
-    return render_template('upload.html', stylePath=scrape(style+".jpg"))
+    if (request.method == 'GET'):
+        style = request.args.get('style')
+        return render_template('upload.html', stylePath=scrape(style+".jpg"))
+    else:
+        if ('file' not in request.files):
+            flash('No file part')
+            return(redirect(request.url))
+        file = request.files['file']
+        if(file.filename == ''):
+            flash('No selected file')
+            return(redirect(request.url))
+        if(file and allowed_file(file.filename)):
+            filename = secure_filename(file.filename)
+            print(file)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return(redirect(url_for('uploaded_file', filename=filename)))
+        flash('Please select right file')
+        return(redirect(request.url))
 
 
 @app.errorhandler(404)
@@ -58,20 +77,6 @@ def server_error(e):
 def method_error(e):
     return render_template('405.html')
 
-
-@app.route('/upload/', methods=['POST'])
-def upload_file():
-        if ('file' not in request.files):
-            flash('No file part')
-            return(redirect(request.url))
-        file = request.files['file']
-        if(file.filename == ''):
-            flash('No selected file')
-            return(redirect(request.url))
-        if(file and allowed_file(file.filename)):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return(redirect(url_for('uploaded_file', filename=filename)))
 
 @app.route('/uploaded_file/')
 def uploaded_file():
