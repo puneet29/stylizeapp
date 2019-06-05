@@ -45,21 +45,22 @@
             </div>
         </nav>
     </div>
-    <div class="container">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-warning alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                    aria-hidden="true">×</span></button>
-                    {{message}}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-    </div>
     {% block body %}
     {% endblock %}
+
+    <div class="container">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-warning alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+                        {{message}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
 
     <footer class="text-light py-3" style="background-color: #212121; width: 100%">
         <div class="container">
