@@ -1,22 +1,36 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, flash
 from bs4 import BeautifulSoup
 import requests
 from stylize import stylize
+from werkzeug.utils import secure_filename
+import os
+
+
+UPLOAD_FOLDER = "uploads/"
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
-def scrape():
-    links = []
-    page = "https://github.com/puneet29/StyleTransferApp/tree/master/images/style-images"
-    r = requests.get(page)
-    soup = BeautifulSoup(r.text, "html.parser")
-    tbody = soup.find("tbody")
-    photo_anchors = tbody.find_all("a", {"class": "js-navigation-open"})
-    for anchors in photo_anchors:
-        links.append(
-            "https://raw.githubusercontent.com/puneet29/StyleTransferApp/master/images/style-images/"+anchors['title'])
-    return(links)
+def allowed_file(filename):
+    return('.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS)
+
+
+def scrape(filename=None):
+    preLink = "https://raw.githubusercontent.com/puneet29/StyleTransferApp/master/images/style-images/"
+    if(filename == None):
+        page = "https://github.com/puneet29/StyleTransferApp/tree/master/images/style-images"
+        links = []
+        r = requests.get(page)
+        soup = BeautifulSoup(r.text, "html.parser")
+        tbody = soup.find("tbody")
+        photo_anchors = tbody.find_all("a", {"class": "js-navigation-open"})
+        for anchors in photo_anchors:
+            links.append(preLink+anchors['title'])
+        return(links)
+    else:
+        return(preLink+filename)
 
 
 @app.route('/')
@@ -26,7 +40,8 @@ def homepage():
 
 @app.route('/upload/')
 def upload():
-    return render_template('upload.html')
+    style = request.args.get('style')
+    return render_template('upload.html', stylePath=scrape(style+".jpg"))
 
 
 @app.errorhandler(404)
@@ -37,6 +52,30 @@ def page_not_found(e):
 @app.errorhandler(500)
 def server_error(e):
     return render_template('500.html')
+
+
+@app.errorhandler(405)
+def method_error(e):
+    return render_template('405.html')
+
+
+@app.route('/upload/', methods=['POST'])
+def upload_file():
+        if ('file' not in request.files):
+            flash('No file part')
+            return(redirect(request.url))
+        file = request.files['file']
+        if(file.filename == ''):
+            flash('No selected file')
+            return(redirect(request.url))
+        if(file and allowed_file(file.filename)):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return(redirect(url_for('uploaded_file', filename=filename)))
+
+@app.route('/uploaded_file/')
+def uploaded_file():
+    return("Done")
 
 
 if __name__ == "__main__":
