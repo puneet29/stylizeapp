@@ -13,12 +13,14 @@ def scrape():
     tbody = soup.find("tbody")
     photo_anchors = tbody.find_all("a", {"class": "js-navigation-open"})
     for anchors in photo_anchors:
-        links.append("https://raw.githubusercontent.com/puneet29/StyleTransferApp/master/images/style-images/"+anchors['title'])
+        links.append(
+            "https://raw.githubusercontent.com/puneet29/StyleTransferApp/master/images/style-images/"+anchors['title'])
     return(links)
+
 
 @app.route('/')
 def homepage():
-    return render_template('index.html', styles = scrape())
+    return render_template('index.html', styles=scrape())
 
 
 if __name__ == "__main__":

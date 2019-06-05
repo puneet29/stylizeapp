@@ -4,11 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Style Transfer App</title>
+
+    <!-- stylesheets -->
     <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+    <!-- app icon -->
     <link rel="shortcut icon" href="{{url_for('static', filename='images/icon.png')}}" type="image/x-icon">
-    <title>Image Style Transfer App</title>
 </head>
 
 <body>
@@ -91,8 +95,7 @@
         </a>
     </div>
 
-
-    <div class="container text-center" style="margin-top: 5%; margin-bottom: 5%">
+    <div class="container text-center" style="margin-top: 5%">
         <h3 class="heading">LET'S STYLIZE YOUR PHOTO LIKE IT WAS MADE BY PICASSO</h3>
         <h5>This tool will stylize your image based on the style you've selected. This tool is an application of deep
             learning and neural style transfer. It uses Pytorch and SciPy to accomplish the results. <br>
@@ -182,10 +185,17 @@
                 <div class="card-body">
                     <h5 class="card-title">3. You get your stylized image</h5>
                     <p class="card-text">The model will paint your image with its artistic skills. </p>
-                    <button type="button" class="btn btn-primary">Let's start
-                        painting</button>
+                    <a role="button" href="javascript:void(0)" class="btn btn-primary" id="startStylize">Let's start
+                        painting</a>
                 </div>
             </div>
+        </div>
+
+        <div class="alert alert-success alert-dismissible" style="display: none" role="alert">
+            Please wait while the model is painting your photo.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     </div>
 
@@ -212,10 +222,21 @@
         </div>
     </footer>
 
+    <!-- scripts -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
     <script type="text/javascript" src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+
+    <!-- my scripts -->
+    <script>
+    $(document).ready(function(){
+        $("#startStylize").click(function(){
+            $('#startStylize').addClass('disabled');
+            $('.alert').show();
+        })
+    });
+    </script>
 </body>
 
 </html>
