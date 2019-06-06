@@ -29,4 +29,4 @@ vcversioner==2.16.0.0
 Werkzeug==0.15.4
 wrapt==1.11.1
 zope.interface==4.6.0
-https://download.pytorch.org/whl/cpu/torch-1.1.0-cp36-cp36m-linux_x86_64.whl
+https://download.pytorch.org/whl/cpu/torch-1.1.0-cp37-cp37m-linux_x86_64.whl
