@@ -1,13 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
 from bs4 import BeautifulSoup
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file, session
+import os
 import requests
 from stylize import stylize
-from werkzeug.utils import secure_filename
-import os
+import threading
 import time
+from werkzeug.utils import secure_filename
 
 
-UPLOAD_FOLDER = "uploads/"
+UPLOAD_FOLDER = "temp/"
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app = Flask(__name__)
@@ -39,11 +40,17 @@ def scrape(filename=None):
 
 @app.route('/')
 def homepage():
+    if 'file' in session:
+        os.remove(session['file'])
+        session.clear()
     return render_template('index.html', styles=scrape())
 
 
 @app.route('/upload/', methods=['POST', 'GET'])
 def upload():
+    if 'file' in session:
+        os.remove(session['file'])
+        session.clear()
     style = request.args.get('style')
     if (request.method == 'GET'):
         return render_template('upload.html', stylePath=scrape(style+".jpg"))
@@ -62,7 +69,12 @@ def upload():
             file.save(uploaded_img)
             stylize(file, 1, output_img, "models/"+style+".model", 0)
             os.remove(uploaded_img)
-            return(render_template('uploaded.html', photo=output_img))
+
+            while(not os.path.exists(output_img)):
+                continue
+            session['file'] = output_img
+            return(render_template("uploaded.html"))
+
         flash('Please select right file')
         return(redirect(request.url))
 
@@ -82,9 +94,16 @@ def method_error(e):
     return render_template('405.html')
 
 
-@app.route('/uploaded_file/')
-def uploaded_file():
-    return("Done")
+@app.route('/download/')
+def download():
+    if('file' in session):
+        return(send_file(
+            session['file'],
+            mimetype='image/jpeg',
+            attachment_filename='image.jpg',
+            as_attachment=True
+        ))
+    return(render_template('404.html'))
 
 
 if __name__ == "__main__":

@@ -18,7 +18,7 @@
 <body>
     <!-- Navbar -->
     <div>
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background: rgba(0, 0, 0, 0.75)">
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background: rgba(33, 33, 33, 1)">
             <a class="navbar-brand" href="/">
                 <img src="{{url_for('static', filename='images/logo.svg')}}" width="32" height="32"
                     class="d-inline-block align-top" alt="Logo"> Style Transfer App
@@ -90,6 +90,9 @@
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
     <script type="text/javascript" src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+
+    {% block script %}
+    {% endblock %}
 </body>
 
 </html>
