@@ -2,3 +2,5 @@ Flask
 beautifulsoup4
 requests
 gunicorn
+torch
+torchvision
