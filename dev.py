@@ -6,13 +6,14 @@ from stylize import stylize
 import threading
 import time
 from werkzeug.utils import secure_filename
+import logging
+import boto3
+import botocore
 
 
-UPLOAD_FOLDER = "temp/"
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Set the secret key to some random bytes. Keep this really secret!
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', os.urandom(24))
@@ -63,12 +64,17 @@ def upload():
             flash('No selected file')
             return(redirect(request.url))
         if(file and allowed_file(file.filename)):
+
+            # S3 Bucket
+            bucketName = "styletransferbucket"
+
             filename = secure_filename(file.filename)
             output_img = 'static/out/' + time.ctime().replace(' ', '_')+'.jpg'
-            uploaded_img = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(uploaded_img)
             stylize(file, 1, output_img, "models/"+style+".model", 0)
-            os.remove(uploaded_img)
+
+            # S3 upload image
+            s3 = boto3.client('s3')
+            s3.upload_file(output_img, bucketName, output_img)
 
             session['file'] = output_img
             return(render_template("uploaded.html"))
@@ -94,14 +100,20 @@ def method_error(e):
 
 @app.route('/download/')
 def download():
-    if('file' in session):
-        return(send_file(
-            session['file'],
-            mimetype='image/jpeg',
-            attachment_filename='image.jpg',
-            as_attachment=True
-        ))
-    return(render_template('404.html'))
+
+    # S3 download
+    Bucket = "styletransferbucket"
+    Key = session['file']
+    outPutName = "stylize.jpg"
+
+    s3 = boto3.resource('s3')
+    try:
+        s3.Bucket(Bucket).download_file(Key, outPutName)
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == "404":
+            print("The object does not exist.")
+        else:
+            raise
 
 
 if __name__ == "__main__":
