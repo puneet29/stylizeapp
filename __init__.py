@@ -70,8 +70,6 @@ def upload():
             stylize(file, 1, output_img, "models/"+style+".model", 0)
             os.remove(uploaded_img)
 
-            while(not os.path.exists(output_img)):
-                continue
             session['file'] = output_img
             return(render_template("uploaded.html"))
 
