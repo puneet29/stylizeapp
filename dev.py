@@ -15,7 +15,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Set the secret key to some random bytes. Keep this really secret!
-app.secret_key = b'os24/.[lNWfPn<Fs]IuH'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', os.urandom(24))
 
 
 def allowed_file(filename):
