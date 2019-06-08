@@ -16,6 +16,7 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 app = Flask(__name__)
 
 # Set the secret key to some random bytes. Keep this really secret!
+# Change the secret key to constant value while using gunicorn workers
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', os.urandom(24))
 
 
