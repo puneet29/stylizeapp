@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from flask import Flask, render_template, request, redirect, url_for, flash, send_file, session
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file, session, make_response
 import os
 import requests
 from stylize import stylize
@@ -78,11 +78,13 @@ def upload():
 
             filename = secure_filename(file.filename)
             output_img = 'static/out/' + time.ctime().replace(' ', '_')+'.jpg'
-            style_image = stylize(file, 1, output_img, "models/"+style+".model", 0)
+            style_image = stylize(file, 1, output_img,
+                                  "models/"+style+".model", 0)
 
             # S3 upload image
             s3 = boto3.client('s3')
-            s3.put_object(Body=style_image, Bucket=bucketName, Key=output_img, ContentType='image/jpeg')
+            s3.put_object(Body=style_image, Bucket=bucketName,
+                          Key=output_img, ContentType='image/jpeg')
 
             session['file'] = output_img
             return(render_template("uploaded.html"))
@@ -112,11 +114,15 @@ def download():
     # S3 download
     Bucket = "styletransferbucket"
     Key = session['file']
-    outPutName = "stylize.jpg"
+    outputName = "stylize.jpg"
 
     s3 = boto3.resource('s3')
     try:
-        s3.Bucket(Bucket).download_file(Key, outPutName)
+        file = s3.Object(Bucket, Key).get()
+        response = make_response(file['Body'].read())
+        response.headers['Content-Type'] = 'image/jpeg'
+        response.headers['Content-Disposition'] = 'attachment; filename=' + outputName
+        return(response)
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == "404":
             print("The object does not exist.")
@@ -125,4 +131,4 @@ def download():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0', port='8000')
