@@ -70,11 +70,11 @@ def upload():
 
             filename = secure_filename(file.filename)
             output_img = 'static/out/' + time.ctime().replace(' ', '_')+'.jpg'
-            stylize(file, 1, output_img, "models/"+style+".model", 0)
+            style_image = stylize(file, 1, output_img, "models/"+style+".model", 0)
 
             # S3 upload image
             s3 = boto3.client('s3')
-            s3.upload_file(output_img, bucketName, output_img)
+            s3.put_object(Body=style_image, Bucket=bucketName, Key=output_img, ContentType='image/jpeg')
 
             session['file'] = output_img
             return(render_template("uploaded.html"))

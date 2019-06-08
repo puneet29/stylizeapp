@@ -1,5 +1,6 @@
 import torch
 from PIL import Image
+import io
 
 
 def gram_matrix(tensor):
@@ -28,8 +29,10 @@ def normalize_batch(batch):
     return (batch - mean) / std
 
 
-def save_image(path, image):
+def convert_image(path, image):
     img = image.clone().clamp(0, 255).numpy()
     img = img.transpose(1, 2, 0).astype('uint8')
     img = Image.fromarray(img)
-    img.save(path)
+    imgBytes = io.BytesIO()
+    img.save(imgBytes, format='JPEG')
+    return(imgBytes.getvalue())

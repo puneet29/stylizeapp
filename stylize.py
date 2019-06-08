@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torchvision import transforms
 from transformer import TransformNet
-from utils import load_image, save_image
+from utils import load_image, convert_image
 
 
 def stylize(content_image, content_scale, output_image, model, cuda=0):
@@ -34,4 +34,4 @@ def stylize(content_image, content_scale, output_image, model, cuda=0):
 
         # Output image
         output = style_model(content_image).cpu()
-    save_image(output_image, output[0])
+    return(convert_image(output_image, output[0]))
