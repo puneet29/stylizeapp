@@ -42,7 +42,11 @@ def scrape(filename=None):
 @app.route('/')
 def homepage():
     if 'file' in session:
-        os.remove(session['file'])
+        # S3 Bucket
+        bucketName = "styletransferbucket"
+        s3 = boto3.resource('s3')
+        obj = s3.Object(bucketName, session['file'])
+        obj.delete()
         session.clear()
     return render_template('index.html', styles=scrape())
 
@@ -50,7 +54,11 @@ def homepage():
 @app.route('/upload/', methods=['POST', 'GET'])
 def upload():
     if 'file' in session:
-        os.remove(session['file'])
+        # S3 Bucket
+        bucketName = "styletransferbucket"
+        s3 = boto3.resource('s3')
+        obj = s3.Object(bucketName, session['file'])
+        obj.delete()
         session.clear()
     style = request.args.get('style')
     if (request.method == 'GET'):
