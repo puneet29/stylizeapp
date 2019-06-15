@@ -12,6 +12,14 @@
         <div class="custom-file">
             <input type="file" name="file" class="custom-file-input" id="contentfileupload">
             <label class="custom-file-label" for="contentfileupload">Choose file</label>
+            <br><br>
+            <div>
+                <label for="styleRange">
+                    <h5>Select style strength &nbsp; &nbsp; </h5>
+                </label>
+                <input type="range" min="0" max="1" step="0.01" style="width: 50%; vertical-align: middle"
+                    class="custom-range" id="styleRange" name="styleRange">
+            </div>
         </div><br><br>
         <input id="stylizeButton" type="submit" class="btn btn-dark" value="Stylize">
     </form>
@@ -20,12 +28,12 @@
 
 {% block script %}
 <script>
-$('#contentfileupload').on('change',function(){
-    //get the file name
-    var fileNameIndex = $(this).val().lastIndexOf('\\') + 1;
-    var fileName = $(this).val().substr(fileNameIndex);
-    //replace the "Choose a file" label
-    $(this).next('.custom-file-label').html(fileName);
-})
+    $('#contentfileupload').on('change', function () {
+        //get the file name
+        var fileNameIndex = $(this).val().lastIndexOf('\\') + 1;
+        var fileName = $(this).val().substr(fileNameIndex);
+        //replace the "Choose a file" label
+        $(this).next('.custom-file-label').html(fileName);
+    })
 </script>
 {% endblock %}

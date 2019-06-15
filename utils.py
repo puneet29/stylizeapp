@@ -1,6 +1,7 @@
 import torch
 from PIL import Image
 import io
+from torchvision import transforms
 
 
 def gram_matrix(tensor):
@@ -11,13 +12,25 @@ def gram_matrix(tensor):
     return(gram)
 
 
-def load_image(filename, size=None, scale=None):
+def load_image(filename):
     img = Image.open(filename)
-    if(size is not None):
-        img = img.resize((size, size), Image.ANTIALIAS)
-    if(scale is not None):
-        img = img.resize((int(img.size[0] / scale), int(img.size[1] / scale)),
-                         Image.ANTIALIAS)
+    max_size = img.size[0] if img.size[0] >= img.size[1] else img.size[1]
+    scale = 1.0
+    if(max_size >= 1500):
+        scale = max_size/1500
+    img = img.resize(
+        (int(img.size[0] / scale), int(img.size[1] / scale)), Image.ANTIALIAS)
+    return(img)
+
+
+def match_size(image, imageToMatch):
+    img = image.squeeze(0)
+    transform = transforms.Compose([
+        transforms.ToPILImage(),
+        transforms.Resize((imageToMatch.shape[2], imageToMatch.shape[3])),
+        transforms.ToTensor()
+    ])
+    img = transform(img)
     return(img)
 
 

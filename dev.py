@@ -1,15 +1,15 @@
-from bs4 import BeautifulSoup
-from flask import Flask, render_template, request, redirect, url_for, flash, send_file, session, make_response
 import os
-import requests
-from stylize import stylize
-import threading
 import time
-from werkzeug.utils import secure_filename
-import logging
+
 import boto3
 import botocore
+import requests
+from bs4 import BeautifulSoup
+from flask import (Flask, flash, make_response, redirect, render_template,
+                   request, send_file, session, url_for)
+from werkzeug.utils import secure_filename
 
+from stylize import stylize
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
@@ -74,13 +74,14 @@ def upload():
             return(redirect(request.url))
         if(file and allowed_file(file.filename)):
 
+            # Get files and styled image
+            style_strength = float(request.form['styleRange'])
+            output_img = 'static/out/' + time.ctime().replace(' ', '_')+'.jpg'
+            style_image = stylize(file, output_img,
+                                  "models/"+style+".model", style_strength, 0)
+
             # S3 Bucket
             bucketName = "styletransferbucket"
-
-            filename = secure_filename(file.filename)
-            output_img = 'static/out/' + time.ctime().replace(' ', '_')+'.jpg'
-            style_image = stylize(file, 1, output_img,
-                                  "models/"+style+".model", 0)
 
             # S3 upload image
             s3 = boto3.client('s3')

@@ -1,27 +1,29 @@
 # Importing the resources
 import sys
 import time
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from torchvision import transforms
+
 from transformer import TransformNet
-from utils import load_image, convert_image
+from utils import convert_image, load_image, match_size
 
 
-def stylize(content_image, content_scale, output_image, model, cuda=0):
+def stylize(content_image, output_image, model, style_strength, cuda=0):
 
     # Select GPU if available
     device = torch.device('cuda' if cuda else 'cpu')
 
     # Load content image
-    content_image = load_image(content_image, scale=content_scale)
+    input_image = load_image(content_image)
     content_transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Lambda(lambda x: x.mul(255))
     ])
-    content_image = content_transform(content_image)
-    content_image = content_image.unsqueeze(0).to(device)
+    input_image = content_transform(input_image)
+    input_image = input_image.unsqueeze(0).to(device)
 
     # Set requires_grad to False
     with torch.no_grad():
@@ -33,5 +35,10 @@ def stylize(content_image, content_scale, output_image, model, cuda=0):
         style_model.to(device)
 
         # Output image
-        output = style_model(content_image).cpu()
-    return(convert_image(output_image, output[0]))
+        output = style_model(input_image).cpu()
+
+    # Make sure both images have same shapes
+    content_image = match_size(input_image, output)
+    weighted_output = output * style_strength + \
+        (content_image * (1 - style_strength))
+    return(convert_image(output_image, weighted_output[0]))
