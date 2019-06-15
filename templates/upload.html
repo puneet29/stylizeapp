@@ -7,7 +7,7 @@
     <br><br>
     <h5>Upload the content image you want to stylize with the style image below</h5><br>
     <p>Please upload a photo which is preferably less than 1500px on either of the dimensions. This is just a
-        developer's preview, the quality might not be as good.</p>
+        developer's preview, to get better quality download the command line tool.</p>
     <form method="POST" enctype="multipart/form-data">
         <div class="custom-file">
             <input type="file" name="file" class="custom-file-input" id="contentfileupload">
@@ -18,7 +18,8 @@
                     <h5>Select style strength &nbsp; &nbsp; </h5>
                 </label>
                 <input type="range" min="0" max="1" step="0.01" style="width: 50%; vertical-align: middle"
-                    class="custom-range" id="styleRange" name="styleRange">
+                    class="custom-range" id="styleRange" onchange="showVal(this.value)" name="styleRange">
+                <label id="percentageRange">50%</label>
             </div>
         </div><br><br>
         <input id="stylizeButton" type="submit" class="btn btn-dark" value="Stylize">
@@ -35,5 +36,8 @@
         //replace the "Choose a file" label
         $(this).next('.custom-file-label').html(fileName);
     })
+    function showVal(value){
+        document.getElementById('percentageRange').innerHTML = Math.round(value * 100) + '%';
+    }
 </script>
 {% endblock %}
