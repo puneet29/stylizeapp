@@ -24,11 +24,15 @@ def load_image(filename):
 
 
 def match_size(image, imageToMatch):
-    img = image.squeeze(0)
+    img = image.clone().clamp(0, 255).numpy()
+    img = img.squeeze(0)
+    img = img.transpose(1, 2, 0).astype('uint8')
+    img = Image.fromarray(img)
+    img = img.resize(
+        (imageToMatch.shape[3], imageToMatch.shape[2]), Image.ANTIALIAS)
     transform = transforms.Compose([
-        transforms.ToPILImage(),
-        transforms.Resize((imageToMatch.shape[2], imageToMatch.shape[3])),
-        transforms.ToTensor()
+        transforms.ToTensor(),
+        transforms.Lambda(lambda x: x.mul(255))
     ])
     img = transform(img)
     return(img)
