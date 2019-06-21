@@ -7,7 +7,6 @@ import requests
 from bs4 import BeautifulSoup
 from flask import (Flask, flash, make_response, redirect, render_template,
                    request, send_file, session, url_for)
-from werkzeug.utils import secure_filename
 
 from stylize import stylize
 
