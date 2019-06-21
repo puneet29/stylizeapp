@@ -1,6 +1,6 @@
 # Style Transfer Website
 
-A website that applies artistic styles to your photo. Based on the Artistic Style Transfer using Neural Networks.
+A website that applies artistic styles to your photo. Based on the Artistic Style Transfer using Neural Networks. This project is an extension of [Style transfer app](https://github.com/puneet29/StyleTransferApp)
 
 ## Live at [bit.ly/stylizeapp](bit.ly/stylizeapp)
 
