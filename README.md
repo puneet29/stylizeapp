@@ -52,7 +52,7 @@ Hosted using AWS EC2, AWS S3, Gunicorn and Flask.
     pip3 install -r requirements
     ```
 
-5. Change the secret key in __init__.py at #19. Replace ```os.urandom(24)```
+5. Change the secret key in __init__.py at [#19](https://github.com/puneet29/stylizeapp/blob/master/__init__.py#L19). Replace ```os.urandom(24)```
    with actual bytes value.
 
 6. Run Web App
