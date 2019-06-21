@@ -1,6 +1,6 @@
 # Style Transfer Website
 
-A website that applies artistic styles to your photo. Based on the Artistic Style Transfer using Neural Networks. 
+A website that applies artistic styles to your photo. Based on the Artistic Style Transfer using Neural Networks.
 
 ## Live at [bit.ly/stylizeapp](bit.ly/stylizeapp)
 
@@ -89,3 +89,9 @@ on how to setup an AWS EC2 instance.
 - Boto3
 - Beautiful Soup 4
 - Requests
+
+## References
+
+- [A Neural Algorithm of Artistic Style](https://arxiv.org/abs/1508.06576)
+- [Perceptual Losses for Real-Time Style Transfer and Super-Resolution](https://arxiv.org/abs/1603.08155)
+- [Instance Normalization](https://arxiv.org/pdf/1607.08022.pdf)
