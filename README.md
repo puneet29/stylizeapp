@@ -76,7 +76,7 @@ We bind our application to all HTTP IPv4 addresses on the server using
 for each gunicorn worker is set to 600 seconds, to account for 10 min delay
 during uploading process. -D option daemonizes the process.
 
-Refer to
+Refer to [this medium article](https://medium.com/@puneet29/how-i-built-and-deployed-my-first-machine-learning-project-4c75d1effe4e?source=friends_link&sk=661c75cff27a77554c8292677216d449) on how I built this app. Also refer to 
 [this gist](https://gist.github.com/puneet29/083f8eb14f78f2d7db3bba506e0faa34.js)
 on how to setup an AWS EC2 instance.
 
