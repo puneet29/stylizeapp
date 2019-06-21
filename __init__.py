@@ -62,7 +62,7 @@ def upload():
         session.clear()
     style = request.args.get('style')
     if (request.method == 'GET'):
-        return render_template('upload.html', stylePath=scrape(style+".jpg"))
+        return render_template('upload.html', styleName= style.upper(), stylePath=scrape(style+".jpg"))
     else:
         if ('file' not in request.files):
             flash('No file part')

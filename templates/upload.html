@@ -2,12 +2,11 @@
 
 {% block body %}
 <div class="container text-center" style="margin-top: 2%; margin-bottom: 8%">
-    <h5>[STEP 2]</h5><br>
+    <h4>Selected Style: {{styleName}}</h4><br>
     <img src='{{stylePath}}' alt="Selected style photo" style="max-width: 100%; max-height: 100%">
     <br><br>
     <h5>Upload the content image you want to stylize with the style image below</h5><br>
-    <p>Please upload a photo which is preferably less than 1500px on either of the dimensions. This is just a
-        developer's preview, to get better quality download the command line tool.</p>
+    <p>To get high resolution results, download the command line tool.</p>
     <form method="POST" enctype="multipart/form-data">
         <div class="custom-file">
             <input type="file" name="file" class="custom-file-input" id="contentfileupload">
@@ -19,7 +18,7 @@
                 </label>
                 <input type="range" min="0" max="1" step="0.01" style="width: 50%; vertical-align: middle"
                     class="custom-range" id="styleRange" onchange="showVal(this.value)" name="styleRange">
-                <label id="percentageRange">50%</label>
+                <label id="percentageRange"></label>
             </div>
         </div><br><br>
         <input id="stylizeButton" type="submit" class="btn btn-dark" value="Stylize">
@@ -36,6 +35,11 @@
         //replace the "Choose a file" label
         $(this).next('.custom-file-label').html(fileName);
     })
+
+    window.onload = function () {
+         showVal(1);
+         document.getElementById("styleRange").value = 1;
+         };
 
     function showVal(value) {
         document.getElementById('percentageRange').innerHTML = Math.round(value * 100) + '%';
