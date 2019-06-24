@@ -2,7 +2,7 @@
 
 A website that applies artistic styles to your photo. Based on the Artistic Style Transfer using Neural Networks. This project is an extension of [Style transfer app](https://github.com/puneet29/StyleTransferApp)
 
-## Live at [bit.ly/stylizeapp](bit.ly/stylizeapp)
+## Live at [bit.ly/stylizeapp](https://bit.ly/stylizeapp)
 
 Hosted using AWS EC2, AWS S3, Gunicorn and Flask.
 
