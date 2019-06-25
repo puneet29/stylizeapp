@@ -13,7 +13,7 @@ def gram_matrix(tensor):
 
 
 def load_image(filename):
-    img = Image.open(filename)
+    img = Image.open(filename).convert('RGB')
     max_size = img.size[0] if img.size[0] >= img.size[1] else img.size[1]
     scale = 1.0
     if(max_size >= 1500):
