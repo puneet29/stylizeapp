@@ -31,7 +31,8 @@ Hosted using AWS EC2, AWS S3, Gunicorn and Flask.
     - On Linux:
 
         ```bash
-        python3 -m venv venv ```
+        python3 -m venv venv
+        ```
 
 3. Activate virtual environment
     - On windows:
